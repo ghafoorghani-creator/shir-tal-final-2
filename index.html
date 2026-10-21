@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#101A35">
+<meta name="description" content="شعر و تال غفور — دفتر شعر، راگ، تال و تمرین موسیقی">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<title>شعر و تال غفور</title>
+<style>
+:root{
+  --bg:#101A35;--surface:#0B1329;--surface2:#16213f;--text:#FFFFFF;--muted:#B9C2D6;
+  --line:#34405f;--accent:#D4AF37;--accent2:#F0D98A;--active:#D4AF37;--glow:rgba(212,175,55,.24);
+  --player:#0d1730;--danger:#e57373;--good:#74c69d;--fontScale:1;--poemScale:1.18;
+  --radius:18px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;font-size:calc(16px * var(--fontScale));line-height:1.55;overflow-x:hidden}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
+.app{min-height:100vh;padding-bottom:110px}
+.topbar{position:sticky;top:0;z-index:30;backdrop-filter:blur(18px);background:color-mix(in srgb,var(--bg) 86%,transparent);border-bottom:1px solid var(--line);padding:calc(8px + env(safe-area-inset-top)) 14px 8px}
+.topbar-inner{max-width:1100px;margin:auto;display:flex;align-items:center;gap:10px}
+.brand-mini{display:flex;align-items:center;gap:8px;min-width:0}
+.brand-mini img{width:42px;height:42px;border-radius:12px;object-fit:cover;box-shadow:0 0 18px var(--glow)}
+.brand-mini strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.icon-btn,.gold-btn,.ghost-btn,.danger-btn{border:1px solid var(--line);background:var(--surface2);color:var(--text);border-radius:12px;min-height:42px;padding:8px 13px;display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:.18s}
+.icon-btn:hover,.ghost-btn:hover{border-color:var(--accent);transform:translateY(-1px)}
+.gold-btn{background:var(--accent);color:#121212;border-color:var(--accent);font-weight:800;box-shadow:0 5px 20px var(--glow)}
+.gold-btn:hover{filter:brightness(1.06);transform:translateY(-1px)}
+.danger-btn{border-color:#7d3d43;color:#ffd5d8;background:#3a1e28}
+main{max-width:1100px;margin:auto;padding:10px 14px 30px}
+.hero{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:24px;min-height:225px;margin-bottom:12px;box-shadow:0 18px 45px rgba(0,0,0,.16)}
+.hero-bg{position:absolute;inset:-30px;background:url("./photo.jpg") center/cover no-repeat;filter:blur(15px) brightness(.38);transform:scale(1.08);opacity:.65}
+.hero-content{position:relative;z-index:1;display:flex;align-items:center;gap:20px;padding:22px;min-height:225px;background:linear-gradient(90deg,rgba(11,19,41,.88),rgba(11,19,41,.42),rgba(11,19,41,.86))}
+.hero-photo{width:150px;height:180px;border-radius:22px;object-fit:cover;object-position:center top;border:2px solid var(--accent);box-shadow:0 0 28px var(--glow)}
+.hero h1{font-size:clamp(24px,6vw,40px);margin:0 0 6px}
+.hero p{margin:0;color:var(--muted)}
+.section{border:1px solid var(--line);background:var(--surface);border-radius:var(--radius);padding:14px;margin:10px 0;box-shadow:0 10px 30px rgba(0,0,0,.12)}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.section-title{display:flex;align-items:center;gap:8px;font-weight:850}
+.section-title .mark{width:8px;height:22px;background:var(--accent);border-radius:8px;box-shadow:0 0 12px var(--glow)}
+.small{font-size:.82em;color:var(--muted)}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap}
+.search{width:100%;display:flex;gap:8px;margin:8px 0 12px}
+.search input{flex:1;min-width:0}
+input,textarea,select{background:var(--surface2);border:1px solid var(--line);color:var(--text);border-radius:12px;padding:10px 12px;width:100%}
+textarea{min-height:120px;resize:vertical}
+input::placeholder,textarea::placeholder{color:#8490aa}
+.taal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(68px,1fr));gap:8px}
+.taal-btn{min-height:58px;border:1px solid var(--line);background:var(--surface2);color:var(--text);border-radius:14px;padding:5px;position:relative;font-weight:850;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+.taal-btn .num{font-size:1.1em;color:var(--accent2)}
+.taal-btn .tiny{font-size:.65em;color:var(--muted);max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.taal-btn.active{border-color:var(--active);box-shadow:0 0 0 1px var(--active),0 0 20px var(--glow);background:color-mix(in srgb,var(--surface2) 86%,var(--accent))}
+.file-list{display:grid;gap:8px}
+.file-item{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:14px;padding:9px;background:color-mix(in srgb,var(--surface2) 90%,transparent)}
+.file-main{min-width:0;flex:1}
+.file-name{font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file-meta{font-size:.78em;color:var(--muted)}
+.file-actions{display:flex;gap:5px;flex-wrap:wrap}
+.file-actions button{min-width:40px}
+.empty{padding:18px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px}
+.rag-tabs{display:flex;gap:7px;overflow:auto;padding-bottom:4px}
+.rag-tab{white-space:nowrap;border:1px solid var(--line);background:var(--surface2);color:var(--text);border-radius:12px;padding:8px 12px}
+.rag-tab.active{border-color:var(--accent);color:var(--accent2);box-shadow:0 0 15px var(--glow)}
+.category-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:10px 0}
+.category-tabs button{border:1px solid var(--line);background:var(--surface2);color:var(--text);border-radius:12px;padding:9px}
+.category-tabs button.active{background:var(--accent);color:#171717;border-color:var(--accent);font-weight:800}
+.poem-grid{display:grid;gap:9px}
+.poem-card{border:1px solid var(--line);background:var(--surface2);border-radius:15px;padding:12px;display:flex;align-items:center;gap:10px}
+.poem-card .poem-open{flex:1;text-align:right;background:none;border:0;color:var(--text);padding:2px}
+.poem-card strong{display:block;font-size:1.02em}
+.poem-card .excerpt{color:var(--muted);font-size:.82em;display:block;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bottom-nav{position:fixed;z-index:40;left:0;right:0;bottom:0;padding:8px 12px calc(8px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--surface) 93%,transparent);backdrop-filter:blur(18px);border-top:1px solid var(--line)}
+.bottom-nav-inner{max-width:600px;margin:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.bottom-nav button{border:1px solid transparent;background:transparent;color:var(--muted);border-radius:12px;padding:7px 4px;font-size:.78em}
+.bottom-nav button.active{color:var(--accent2);background:var(--surface2);border-color:var(--line)}
+.player{position:fixed;z-index:35;left:10px;right:10px;bottom:82px;max-width:700px;margin:auto;background:var(--player);border:1px solid var(--accent);border-radius:16px;padding:8px 10px;box-shadow:0 8px 30px rgba(0,0,0,.35),0 0 18px var(--glow)}
+.player.hidden{display:none}
+.player-row{display:flex;align-items:center;gap:8px}
+.player-info{min-width:0;flex:1}
+.player-info strong{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.9em}
+.player-info span{font-size:.72em;color:var(--muted)}
+.player progress{width:100%;height:5px;accent-color:var(--accent);margin-top:6px}
+.player .mini{min-width:40px;height:40px;padding:5px;border-radius:10px}
+.modal-backdrop{position:fixed;z-index:100;inset:0;background:rgba(0,0,0,.65);display:none;align-items:flex-end;justify-content:center;padding:12px}
+.modal-backdrop.show{display:flex}
+.modal{width:min(720px,100%);max-height:88vh;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:16px;box-shadow:0 25px 80px rgba(0,0,0,.45)}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:8px;position:sticky;top:-16px;background:var(--surface);padding:4px 0 10px;z-index:2}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-full{grid-column:1/-1}
+label{display:block;color:var(--muted);font-size:.83em;margin-bottom:5px}
+.notice{border:1px solid var(--line);border-radius:12px;padding:10px;color:var(--muted);font-size:.83em}
+.notice.good{border-color:#3c715d;color:#b7e8cf}
+.notice.warn{border-color:#806d2f;color:#f1dc8b}
+.notice.danger{border-color:#7d3d43;color:#ffc3c7}
+.range-row{display:grid;grid-template-columns:1fr 80px;gap:8px;align-items:center}
+input[type=range]{padding:0}
+.color-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.color-item{display:grid;grid-template-columns:50px 1fr;gap:8px;align-items:center}
+.color-item input[type=color]{width:50px;height:42px;padding:3px}
+.toast{position:fixed;z-index:200;top:calc(70px + env(safe-area-inset-top));left:50%;transform:translateX(-50%) translateY(-15px);opacity:0;pointer-events:none;background:var(--surface2);border:1px solid var(--accent);color:var(--text);padding:9px 14px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.25);transition:.2s;max-width:90%}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+hr{border:0;border-top:1px solid var(--line);margin:14px 0}
+.kbd{border:1px solid var(--line);background:var(--surface2);border-radius:7px;padding:2px 6px;font-size:.75em}
+.hidden-input{display:none}
+.poem-reader{font-size:calc(1em * var(--poemScale));line-height:1.95;white-space:pre-wrap;text-align:right;background:var(--surface2);border:1px solid var(--line);border-radius:16px;padding:18px;min-height:260px}
+.reader-controls{position:sticky;top:58px;z-index:15;background:color-mix(in srgb,var(--surface) 95%,transparent);backdrop-filter:blur(15px);border:1px solid var(--line);border-radius:14px;padding:8px;margin-bottom:9px}
+.reader-controls .row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+@media(max-width:600px){
+  .hero-content{padding:16px;min-height:210px;gap:13px}.hero-photo{width:105px;height:145px}.hero h1{font-size:25px}
+  .form-grid,.color-grid{grid-template-columns:1fr}.file-actions button{min-width:44px}.taal-grid{grid-template-columns:repeat(5,1fr)}
+}
+@media(min-width:800px){.modal-backdrop{align-items:center}.bottom-nav{left:auto;right:14px;bottom:14px;width:380px;border:1px solid var(--line);border-radius:18px}.player{bottom:88px}}
+body.light{
+  --bg:#F6F7FA;--surface:#FFFFFF;--surface2:#EEF1F6;--text:#101A35;--muted:#5C667B;--line:#D7DCE6;
+  --player:#FFFFFF;
+}
+body.light .hero-content{background:linear-gradient(90deg,rgba(255,255,255,.92),rgba(255,255,255,.60),rgba(255,255,255,.92))}
+body.light .hero-bg{filter:blur(15px) brightness(.82)}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-mini"><img src="./icon-192.png" alt="آیکن شعر و تال غفور"><strong>شعر و تال غفور</strong></div>
+      <div style="margin-inline-start:auto;display:flex;gap:6px">
+        <button class="icon-btn" id="globalSearchBtn" title="جست‌وجوی سراسری">⌕</button>
+        <button class="icon-btn" id="settingsBtn" title="تنظیمات">⚙</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-bg" id="heroBg"></div>
+      <div class="hero-content">
+        <img class="hero-photo" src="./photo.jpg" alt="عکس شخصی">
+        <div>
+          <h1>شعر و تال غفور</h1>
+          <p>کتاب شعر، راگ، تال، ریتم طبله و تمرین موسیقی؛ همه در یک محیط جمع‌وجور.</p>
+          <div class="small" style="margin-top:10px">اطلاعات اصلی در حافظه داخلی دستگاه ذخیره می‌شود.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="taalSection">
+      <div class="section-head">
+        <div class="section-title"><span class="mark"></span>تال‌های صوتی و تصویری</div>
+        <div class="toolbar">
+          <span class="small" id="taalCount">۰ تال</span>
+          <button class="gold-btn" id="addTaalBtn">＋ افزودن تال</button>
+        </div>
+      </div>
+      <div class="search"><input id="taalSearch" placeholder="جست‌وجوی تال یا شماره..."><button class="icon-btn" id="clearTaalSearch">×</button></div>
+      <div class="taal-grid" id="taalGrid"></div>
+      <div class="small" id="taalFileHint" style="margin-top:8px"></div>
+      <div class="toolbar" id="taalManageBar" style="margin:8px 0"></div>
+      <div class="file-list" id="taalFiles"></div>
+    </section>
+
+    <section class="section" id="bookSection">
+      <div class="section-head">
+        <div class="section-title"><span class="mark"></span>کتاب شعر</div>
+        <div class="toolbar">
+          <button class="gold-btn" id="addPoemBtn">＋ افزودن شعر</button>
+          <button class="ghost-btn" id="importBtn">واردکردن</button>
+        </div>
+      </div>
+      <div class="rag-tabs" id="ragTabs"></div>
+      <div class="toolbar" id="ragManageBar" style="margin-top:8px"></div>
+      <div class="category-tabs">
+        <button data-cat="aram">آرام</button><button data-cat="motavaset">متوسط</button><button data-cat="mast">مست</button>
+      </div>
+      <div class="search"><input id="poemSearch" placeholder="جست‌وجوی عنوان یا متن شعر..."><button class="icon-btn" id="clearPoemSearch">×</button></div>
+      <div class="poem-grid" id="poemGrid"></div>
+    </section>
+
+    <section class="section" id="searchSection">
+      <div class="section-head"><div class="section-title"><span class="mark"></span>جست‌وجوی سراسری</div></div>
+      <div class="search"><input id="globalSearch" placeholder="تال، شماره، فایل، راگ، شعر، متن و یادداشت..."><button class="icon-btn" id="clearGlobalSearch">×</button></div>
+      <div id="globalResults" class="file-list"></div>
+    </section>
+
+    <section class="section" id="readerSection" style="display:none"></section>
+    <section class="section" id="settingsSection" style="display:none"></section>
+  </main>
+
+  <div class="player hidden" id="player">
+    <div class="player-row">
+      <button class="icon-btn mini" id="playerPlay">▶</button>
+      <button class="icon-btn mini" id="playerStop">■</button>
+      <div class="player-info"><strong id="playerName">—</strong><span id="playerMeta">—</span></div>
+      <select id="playerRate" style="width:72px;padding:6px"><option value="1">1×</option><option value="2">2×</option><option value=".75">0.75×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option></select>
+    </div>
+    <progress id="playerProgress" value="0" max="1"></progress>
+    <audio id="audio" preload="metadata"></audio>
+  </div>
+
+  <nav class="bottom-nav">
+    <div class="bottom-nav-inner">
+      <button data-nav="home" class="active">⌂<br>خانه</button>
+      <button data-nav="book">♫<br>کتاب شعر</button>
+      <button data-nav="search">⌕<br>جست‌وجو</button>
+      <button data-nav="settings">⚙<br>تنظیمات</button>
+    </div>
+  </nav>
+</div>
+
+<div class="modal-backdrop" id="modalBackdrop"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast"></div>
+<input class="hidden-input" type="file" id="filePicker" multiple accept="audio/*,video/*,.mp3,.m4a,.aac,.wav,.ogg,.flac,.mp4,.mov,.webm,.txt,.md,.csv,.json">
+<input class="hidden-input" type="file" id="importTextPicker" multiple accept=".txt,.md,.csv,.json,text/plain,text/markdown,text/csv,application/json">
+
+<script>
+"use strict";
+const APP_NAME="شعر و تال غفور", DB_NAME="sherTaalGhafoorDB", DB_VER=1;
+const DEFAULTS={theme:"dark",fontScale:1,poemScale:1.18,blur:true,blurAmount:15,defaultRate:1,preserveAudio:true,showPersianDigits:true,
+colors:{dark:{bg:"#101A35",surface:"#0B1329",surface2:"#16213F",text:"#FFFFFF",muted:"#B9C2D6",line:"#34405F",accent:"#D4AF37",active:"#D4AF37",glow:"#D4AF37",player:"#0D1730"},
+light:{bg:"#F6F7FA",surface:"#FFFFFF",surface2:"#EEF1F6",text:"#101A35",muted:"#5C667B",line:"#D7DCE6",accent:"#D4AF37",active:"#D4AF37",glow:"#D4AF37",player:"#FFFFFF"}}};
+let settings=loadSettings(), db=null, taals=[], rags=[], poems=[], files=[], trash=[];
+let activeTaal=null, activeRag=null, activeCat="aram", currentPoem=null, currentFile=null;
+
+function loadSettings(){try{return {...DEFAULTS,...JSON.parse(localStorage.getItem("stg.settings")||"{}"),colors:{...DEFAULTS.colors,...(JSON.parse(localStorage.getItem("stg.settings")||"{}").colors||{})}}}catch{return structuredClone(DEFAULTS)}}
+function saveSettings(){localStorage.setItem("stg.settings",JSON.stringify(settings));applySettings()}
+function uid(){return crypto.randomUUID?crypto.randomUUID():Date.now()+"-"+Math.random().toString(36).slice(2)}
+function now(){return Date.now()}
+function normalize(s=""){return s.toString().replace(/[يى]/g,"ی").replace(/ك/g,"ک").toLowerCase().trim()}
+function faNum(n){if(!settings.showPersianDigits)return String(n);return String(n).replace(/\d/g,d=>"۰۱۲۳۴۵۶۷۸۹"[d])}
+function escapeHtml(s=""){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function fmtBytes(n){if(!n)return "";let u=["B","KB","MB","GB"],i=0;while(n>=1024&&i<3){n/=1024;i++}return n.toFixed(i?1:0)+" "+u[i]}
+function fmtTime(sec){if(!isFinite(sec))return "—";let m=Math.floor(sec/60),s=Math.floor(sec%60);return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`}
+function toJalali(gy,gm,gd){ // compact, accurate Gregorian→Jalali conversion
+ const gdm=[0,31,59,90,120,151,181,212,243,273,304,334],gdmL=[0,31,60,91,121,152,182,213,244,274,305,335];
+ let gy2=gy+1, days=365*(gy2-1)+Math.floor((gy2-1)/4)-Math.floor((gy2-1)/100)+Math.floor((gy2+299)/400)+gd+gdm[gm-1];
+ if((gy%4===0&&gy%100!==0)||gy%400===0) days=365*(gy-1)+Math.floor((gy-1)/4)-Math.floor((gy-1)/100)+Math.floor((gy-1)/400)+gd+gdmL[gm-1];
+ let jy=-1595+33*Math.floor(days/12053); days%=12053;
+ jy+=4*Math.floor(days/1461); days%=1461;
+ if(days>365){jy+=Math.floor((days-1)/365);days=(days-1)%365}
+ let jm=days<186?1+Math.floor(days/31):7+Math.floor((days-186)/30), jd=1+(days<186?days%31:(days-186)%30);
+ return [jy,jm,jd]
+}
+function dateText(ts){let d=new Date(ts), g=`${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,"0")}/${String(d.getDate()).padStart(2,"0")}`;let j=toJalali(d.getFullYear(),d.getMonth()+1,d.getDate()),p=`${j[0]}/${String(j[1]).padStart(2,"0")}/${String(j[2]).padStart(2,"0")}`;return settings.dateMode==="gregorian"?g:p}
+function openDB(){return new Promise((resolve,reject)=>{let r=indexedDB.open(DB_NAME,DB_VER);r.onupgradeneeded=()=>{let d=r.result;["taals","rags","poems","files","trash"].forEach(s=>{if(!d.objectStoreNames.contains(s))d.createObjectStore(s,{keyPath:"id"})})};r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)})}
+function tx(store,mode="readonly"){return db.transaction(store,mode).objectStore(store)}
+function all(store){return new Promise((res,rej)=>{let r=tx(store).getAll();r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+function put(store,obj){return new Promise((res,rej)=>{let r=tx(store,"readwrite").put(obj);r.onsuccess=()=>res(obj);r.onerror=()=>rej(r.error)})}
+function del(store,id){return new Promise((res,rej)=>{let r=tx(store,"readwrite").delete(id);r.onsuccess=()=>res();r.onerror=()=>rej(r.error)})}
+function clearStore(store){return new Promise((res,rej)=>{let r=tx(store,"readwrite").clear();r.onsuccess=()=>res();r.onerror=()=>rej(r.error)})}
+async function refresh(){[taals,rags,poems,files,trash]=await Promise.all(["taals","rags","poems","files","trash"].map(all));rags=rags.filter(r=>!r.deleted);rags.sort((a,b)=>a.order-b.order);taals=taals.filter(t=>!t.deleted);taals.sort((a,b)=>a.order-b.order);renderAll()}
+async function seed(){if(rags.length)return;let names=["راگ بهیرو","بهیرو","درباری","شیورنجنی","بلاول","سایر راگ‌ها"];for(let i=0;i<names.length;i++)await put("rags",{id:uid(),name:names[i],description:"",order:i,createdAt:now(),updatedAt:now()});await refresh();activeRag=rags[0]?.id}
+function applySettings(){let mode=settings.theme==="light"?"light":"dark";document.body.classList.toggle("light",mode==="light");let c=settings.colors[mode];for(let [k,v] of Object.entries(c)){document.documentElement.style.setProperty("--"+k,v)}document.documentElement.style.setProperty("--fontScale",settings.fontScale);document.documentElement.style.setProperty("--poemScale",settings.poemScale);document.getElementById("heroBg").style.filter=`blur(${settings.blurAmount}px) brightness(${mode==="light"?.82:.38})`;document.getElementById("heroBg").style.opacity=settings.blur?.65:0}
+function toast(msg,type=""){let e=document.getElementById("toast");e.textContent=msg;e.className="toast show";if(type)e.dataset.type=type;clearTimeout(window.__toast);window.__toast=setTimeout(()=>e.className="toast",2600)}
+function showModal(title,body,actions=""){let m=document.getElementById("modal");m.innerHTML=`<div class="modal-head"><strong>${title}</strong><button class="icon-btn" id="modalClose">×</button></div>${body}<div style="display:flex;gap:8px;justify-content:flex-start;margin-top:14px">${actions}</div>`;document.getElementById("modalBackdrop").classList.add("show");document.getElementById("modalClose").onclick=closeModal}
+function closeModal(){document.getElementById("modalBackdrop").classList.remove("show");document.getElementById("modal").innerHTML=""}
+document.getElementById("modalBackdrop").addEventListener("click",e=>{if(e.target.id==="modalBackdrop")closeModal()});
+
+function renderTaals(){let q=normalize(document.getElementById("taalSearch").value), grid=document.getElementById("taalGrid");let list=taals.filter(t=>!q||normalize(t.name).includes(q)||String(t.order+1).includes(q));document.getElementById("taalCount").textContent=faNum(taals.length)+" تال";grid.innerHTML=list.length?list.map((t,i)=>`<button class="taal-btn ${activeTaal===t.id?"active":""}" data-taal="${t.id}"><span class="num">${faNum(taals.indexOf(t)+1)}</span><span class="tiny">${escapeHtml(t.name)}</span></button>`).join(""):`<div class="empty" style="grid-column:1/-1">هنوز تالی ثبت نشده است. از «＋ افزودن تال» شروع کنید.</div>`;
+grid.querySelectorAll("[data-taal]").forEach(b=>b.onclick=()=>{activeTaal=b.dataset.taal;renderTaals();renderTaalFiles()});
+renderTaalFiles()}
+async function renderTaalFiles(){let box=document.getElementById("taalFiles"),hint=document.getElementById("taalFileHint"),bar=document.getElementById("taalManageBar");if(!activeTaal){box.innerHTML="";hint.textContent="یک شماره تال را انتخاب کنید تا فایل‌های همان تال نمایش داده شوند.";bar.innerHTML="";return}let t=taals.find(x=>x.id===activeTaal),fs=files.filter(f=>f.taalId===activeTaal&&!f.deleted);hint.textContent=`تال انتخاب‌شده: ${t?.name||""} • ${faNum(fs.length)} فایل`;bar.innerHTML=`<button class="ghost-btn" id="manageTaal">✎ ویرایش تال</button><button class="ghost-btn" id="addFilesToTaal">＋ افزودن فایل</button><button class="ghost-btn" id="dupTaal">⧉ تکثیر</button><button class="danger-btn" id="delTaal">🗑 حذف</button>`;box.innerHTML=fs.length?fs.map(fileHtml).join(""):`<div class="empty">برای این تال فایلی ثبت نشده است.</div>`;bindFileButtons(box);document.getElementById("manageTaal").onclick=()=>editTaal(activeTaal);document.getElementById("dupTaal").onclick=()=>duplicateTaal(activeTaal);document.getElementById("delTaal").onclick=()=>trashTaal(activeTaal);document.getElementById("addFilesToTaal").onclick=()=>addFilesToTaal(activeTaal)}
+async function addFilesToTaal(id){let input=document.createElement("input");input.type="file";input.multiple=true;input.accept="audio/*,video/*,.mp3,.m4a,.aac,.wav,.ogg,.flac,.mp4,.mov,.webm";input.onchange=async()=>{try{for(let f of input.files)await saveMedia(f,id);await refresh();toast("فایل‌ها اضافه شدند","good")}catch(e){toast("برخی فایل‌ها ذخیره نشدند؛ ظرفیت یا فرمت را بررسی کنید","danger")}};input.click()}
+async function duplicateTaal(id){let t=taals.find(x=>x.id===id);if(!t)return;let n={...t,id:uid(),name:t.name+" (نسخه)",order:taals.length,createdAt:now(),updatedAt:now()};await put("taals",n);for(let f of files.filter(x=>x.taalId===id&&!x.deleted)){await put("files",{...f,id:uid(),taalId:n.id})}activeTaal=n.id;await refresh();toast("تال تکثیر شد","good")}
+function fileHtml(f){return `<div class="file-item"><div class="file-main"><div class="file-name">${f.type==="video"?"🎬":"♫"} ${escapeHtml(f.name)}</div><div class="file-meta">${f.mime||"فایل رسانه‌ای"} • ${fmtBytes(f.size)}${f.duration?` • ${fmtTime(f.duration)}`:""}</div></div><div class="file-actions"><button class="icon-btn" data-play="${f.id}">▶</button><button class="icon-btn" data-rename="${f.id}">✎</button><button class="icon-btn" data-move="${f.id}">↗</button><button class="icon-btn" data-trash="${f.id}">🗑</button></div></div>`}
+function bindFileButtons(box){box.querySelectorAll("[data-play]").forEach(b=>b.onclick=()=>playFile(b.dataset.play));box.querySelectorAll("[data-rename]").forEach(b=>b.onclick=()=>renameFile(b.dataset.rename));box.querySelectorAll("[data-move]").forEach(b=>b.onclick=()=>moveFile(b.dataset.move));box.querySelectorAll("[data-trash]").forEach(b=>b.onclick=()=>trashFile(b.dataset.trash))}
+function renderRags(){let box=document.getElementById("ragTabs"),bar=document.getElementById("ragManageBar");box.innerHTML=rags.length?rags.map(r=>`<button class="rag-tab ${activeRag===r.id?"active":""}" data-rag="${r.id}">${escapeHtml(r.name)}</button>`).join(""):`<div class="empty">راگی ثبت نشده است.</div>`;box.querySelectorAll("[data-rag]").forEach(b=>b.onclick=()=>{activeRag=b.dataset.rag;renderRags();renderPoems()});if(!activeRag&&rags[0])activeRag=rags[0].id;bar.innerHTML=activeRag?`<button class="ghost-btn" id="addRag">＋ راگ</button><button class="ghost-btn" id="editRag">✎ ویرایش راگ</button><button class="danger-btn" id="delRag">🗑 حذف راگ</button>`:`<button class="gold-btn" id="addRag">＋ افزودن راگ</button>`;document.getElementById("addRag").onclick=addRag;document.getElementById("editRag")?.addEventListener("click",()=>editRag(activeRag));document.getElementById("delRag")?.addEventListener("click",()=>trashRag(activeRag))}
+function addRag(){showModal("افزودن راگ",`<label>نام راگ</label><input id="rName" placeholder="مثلاً یمن"><label style="margin-top:8px">توضیح</label><textarea id="rDesc" style="min-height:80px"></textarea>`,`<button class="ghost-btn" id="cancelM">انصراف</button><button class="gold-btn" id="saveM">ذخیره</button>`);document.getElementById("cancelM").onclick=closeModal;document.getElementById("saveM").onclick=async()=>{let name=document.getElementById("rName").value.trim();if(!name)return toast("نام راگ را وارد کنید");let r={id:uid(),name,description:document.getElementById("rDesc").value,order:rags.length,createdAt:now(),updatedAt:now()};await put("rags",r);activeRag=r.id;closeModal();refresh();toast("راگ ذخیره شد","good")}}
+function editRag(id){let r=rags.find(x=>x.id===id);if(!r)return;showModal("ویرایش راگ",`<label>نام راگ</label><input id="rName" value="${escapeHtml(r.name)}"><label style="margin-top:8px">توضیح</label><textarea id="rDesc" style="min-height:80px">${escapeHtml(r.description||"")}</textarea>`,`<button class="ghost-btn" id="cancelM">انصراف</button><button class="gold-btn" id="saveM">ذخیره</button>`);document.getElementById("cancelM").onclick=closeModal;document.getElementById("saveM").onclick=async()=>{r.name=document.getElementById("rName").value.trim()||r.name;r.description=document.getElementById("rDesc").value;r.updatedAt=now();await put("rags",r);closeModal();refresh();toast("راگ ویرایش شد","good")}}
+function trashRag(id){let r=rags.find(x=>x.id===id);if(!r)return;let count=poems.filter(p=>p.ragId===id&&!p.deleted).length;showModal("حذف راگ",`<div class="notice warn">راگ «${escapeHtml(r.name)}» حذف می‌شود؛ ${faNum(count)} شعر مرتبط بدون حذف باقی می‌ماند. می‌توانید بعداً آن‌ها را به راگ دیگری منتقل کنید.</div>`,`<button class="ghost-btn" id="cancelM">انصراف</button><button class="danger-btn" id="yes">انتقال به سطل</button>`);document.getElementById("cancelM").onclick=closeModal;document.getElementById("yes").onclick=async()=>{r.deleted=true;await put("rags",r);await put("trash",{id:uid(),kind:"rag",originalId:id,data:r,deletedAt:now()});activeRag=rags.find(x=>!x.deleted&&x.id!==id)?.id||null;closeModal();refresh();toast("راگ حذف شد")}}
+function renderPoems(){let q=normalize(document.getElementById("poemSearch").value),box=document.getElementById("poemGrid");document.querySelectorAll(".category-tabs button").forEach(b=>b.classList.toggle("active",b.dataset.cat===activeCat));let list=poems.filter(p=>p.ragId===activeRag&&p.category===activeCat&&!p.deleted).filter(p=>!q||normalize(p.title).includes(q)||normalize(p.text).includes(q)||normalize(p.note).includes(q));box.innerHTML=list.length?list.map(p=>`<div class="poem-card"><button class="poem-open" data-poem="${p.id}"><strong>${escapeHtml(p.title||"بدون عنوان")}</strong><span class="excerpt">${escapeHtml((p.text||"").replace(/\n/g," ").slice(0,120))}</span><span class="small">${dateText(p.updatedAt)}${p.taalId?" • تال مرتبط":""}</span></button><button class="icon-btn" data-editpoem="${p.id}">✎</button><button class="icon-btn" data-trashpoem="${p.id}">🗑</button></div>`).join(""):`<div class="empty">در بخش «${activeCat==="aram"?"آرام":activeCat==="motavaset"?"متوسط":"مست"}» شعری وجود ندارد.</div>`;box.querySelectorAll("[data-poem]").forEach(b=>b.onclick=()=>openPoem(b.dataset.poem));box.querySelectorAll("[data-editpoem]").forEach(b=>b.onclick=()=>editPoem(b.dataset.editpoem));box.querySelectorAll("[data-trashpoem]").forEach(b=>b.onclick=()=>trashPoem(b.dataset.trashpoem))}
+function renderAll(){renderTaals();renderRags();renderPoems();renderGlobalSearch();if(currentPoem)renderReader()}
+function showNav(which){document.querySelectorAll(".bottom-nav button").forEach(b=>b.classList.toggle("active",b.dataset.nav===which));if(which==="home"){document.getElementById("readerSection").style.display="none";document.getElementById("settingsSection").style.display="none";document.getElementById("searchSection").style.display="block"}if(which==="book"){document.getElementById("bookSection").scrollIntoView({behavior:"smooth"});document.getElementById("readerSection").style.display="none"}if(which==="search"){document.getElementById("searchSection").scrollIntoView({behavior:"smooth"});document.getElementById("globalSearch").focus()}if(which==="settings"){openSettings()}}
+function addTaal(){showModal("افزودن تال",`<div class="form-grid"><div><label>نام تال</label><input id="mTaalName" placeholder="مثلاً دادره"></div><div><label>توضیح</label><input id="mTaalNote" placeholder="اختیاری"></div><div class="form-full"><label>فایل‌های صوتی و تصویری</label><input id="mTaalFiles" type="file" multiple accept="audio/*,video/*,.mp3,.m4a,.aac,.wav,.ogg,.flac,.mp4,.mov,.webm"></div><div><label><input id="mFav" type="checkbox" style="width:auto"> علاقه‌مندی</label></div></div>`,`<button class="ghost-btn" id="cancelM">انصراف</button><button class="gold-btn" id="saveM">ذخیره تال</button>`);document.getElementById("cancelM").onclick=closeModal;document.getElementById("saveM").onclick=async()=>{let name=document.getElementById("mTaalName").value.trim();if(!name)return toast("نام تال را وارد کنید");let t={id:uid(),name,note:document.getElementById("mTaalNote").value.trim(),favorite:document.getElementById("mFav").checked,order:taals.length,createdAt:now(),updatedAt:now()};try{await put("taals",t);for(let f of document.getElementById("mTaalFiles").files)await saveMedia(f,t.id);closeModal();activeTaal=t.id;await refresh();toast("تال با موفقیت ذخیره شد","good")}catch(e){toast("ذخیره انجام نشد؛ احتمالاً ظرفیت دستگاه کافی نیست","danger")}}}
+async function saveMedia(blob,taalId){let type=blob.type.startsWith("video/")?"video":"audio";let rec={id:uid(),taalId,name:blob.name,size:blob.size,mime:blob.type,type,blob,createdAt:now(),updatedAt:now(),duration:0,deleted:false};try{let url=URL.createObjectURL(blob),el=document.createElement(type);el.src=url;await new Promise(resolve=>{let done=()=>{rec.duration=el.duration||0;URL.revokeObjectURL(url);resolve()};el.onloadedmetadata=done;el.onerror=()=>{URL.revokeObjectURL(url);resolve()};setTimeout(done,2500)});await put("files",rec)}catch(e){throw e}}
+function editTaal(id){let t=taals.find(x=>x.id===id);if(!t)return;showModal("ویرایش تال",`<div class="form-grid"><div><label>نام تال</label><input id="mName" value="${escapeHtml(t.name)}"></div><div><label>توضیح</label><input id="mNote" value="${escapeHtml(t.note||"")}"></div></div><hr><div class="toolbar"><button class="ghost-btn" id="duplicateT">تکثیر تال</button><button class="danger-btn" id="deleteT">انتقال به سطل زباله</button></div>`,`<button class="ghost-btn" id="cancelM">بستن</button><button class="gold-btn" id="saveM">ذخیره</button>`);document.getElementById("saveM").onclick=async()=>{t.name=document.getElementById("mName").value.trim()||t.name;t.note=document.getElementById("mNote").value.trim();t.updatedAt=now();await put("taals",t);closeModal();refresh();toast("ویرایش ذخیره شد","good")};document.getElementById("cancelM").onclick=closeModal;document.getElementById("deleteT").onclick=()=>trashTaal(id);document.getElementById("duplicateT").onclick=async()=>{let n={...t,id:uid(),name:t.name+" (نسخه)",order:taals.length,createdAt:now(),updatedAt:now()};await put("taals",n);for(let f of files.filter(x=>x.taalId===id&&!x.deleted)){let c={...f,id:uid(),taalId:n.id};await put("files",c)}closeModal();activeTaal=n.id;refresh();toast("تال تکثیر شد","good")}}
+function trashTaal(id){let t=taals.find(x=>x.id===id);if(!t)return;showModal("تأیید حذف",`<div class="notice warn">تال «${escapeHtml(t.name)}» به سطل زباله منتقل می‌شود. فایل‌هایش نیز قابل بازیابی خواهند بود.</div>`,`<button class="ghost-btn" id="cancelM">انصراف</button><button class="danger-btn" id="yes">انتقال</button>`);document.getElementById("cancelM").onclick=closeModal;document.getElementById("yes").onclick=async()=>{await put("trash",{id:uid(),kind:"taal",originalId:id,data:t,deletedAt:now()});t.deleted=true;await put("taals",t);for(let f of files.filter(x=>x.taalId===id&&!x.deleted)){f.deleted=true;await put("files",f)}activeTaal=null;closeModal();refresh();toast("تال به سطل زباله رفت")}}
+function renameFile(id){let f=files.find(x=>x.id===id);if(!f)return;showModal("تغییر نام فایل",`<label>نام جدید</label><input id="newName" value="${escapeHtml(f.name)}">`,`<button class="ghost-btn" id="cancelM">انصراف</button><button class="gold-btn" id="saveM">ذخیره</button>`);document.getElementById("cancelM").onclick=closeModal;document.getElementById("saveM").onclick=async()=>{f.name=document.getElementById("newName").value.trim()||f.name;f.updatedAt=now();await put("files",f);closeModal();refresh();toast("نام فایل تغییر کرد","good")}}
+function moveFile(id){let f=files.find(x=>x.id===id);if(!f)return;let opts=taals.map(t=>`<option value="${t.id}" ${t.id===f.taalId?"selected":""}>${escapeHtml(t.name)}</option>`).join("");showModal("انتقال فایل",`<label>تال مقصد</label><select id="dest">${opts}</select>`,`<button class="ghost-btn" id="cancelM">انصراف</button><button class="gold-btn" id="saveM">انتقال</button>`);document.getElementById("cancelM").onclick=closeModal;document.getElementById("saveM").onclick=async()=>{f.taalId=document.getElementById("dest").value;f.updatedAt=now();await put("files",f);closeModal();refresh();toast("فایل منتقل شد","good")}}
+function trashFile(id){let f=files.find(x=>x.id===id);if(!f)return;showModal("حذف فایل",`<div class="notice warn">فایل «${escapeHtml(f.name)}» به سطل زباله منتقل می‌شود.</div>`,`<button class="ghost-btn" id="cancelM">انصراف</button><button class="danger-btn" id="yes">حذف</button>`);document.getElementById("cancelM").onclick=closeModal;document.getElementById("yes").onclick=async()=>{f.deleted=true;await put("files",f);await put("trash",{id:uid(),kind:"file",originalId:id,data:{...f,blob:undefined},deletedAt:now()});closeModal();refresh();toast("فایل به سطل زباله رفت")}}
+function playFile(id){let f=files.find(x=>x.id===id);if(!f||!f.blob){toast("فایل در دسترس نیست","danger");return}if(f.type!=="audio"){toast("پخش ویدیو در پنجره اصلی برنامه انجام می‌شود");let url=URL.createObjectURL(f.blob);showModal("پخش ویدیو",`<video controls playsinline style="width:100%;max-height:55vh;border-radius:14px;background:#000" src="${url}"></video>`,`<button class="ghost-btn" id="cancelM">بستن</button>`);document.getElementById("cancelM").onclick=()=>{URL.revokeObjectURL(url);closeModal()};return}currentFile=f;let audio=document.getElementById("audio");audio.src=URL.createObjectURL(f.blob);audio.playbackRate=Number(document.getElementById("playerRate").value)||1;document.getElementById("playerName").textContent=f.name;document.getElementById("playerMeta").textContent=taals.find(t=>t.id===f.taalId)?.name||"تال";document.getElementById("player").classList.remove("hidden");audio.play().then(()=>updatePlayer()).catch(()=>toast("پخش این فایل توسط مرورگر/فرمت دستگاه پشتیبانی نشد","danger"))}
+function stopAudio(){let a=document.getElementById("audio");a.pause();a.currentTime=0;document.getElementById("playerPlay").textContent="▶"}
+function editPoem(id){let p=poems.find(x=>x.id===id);poemModal(p)}
+function poemModal(existing=null){let p=existing||{id:uid(),title:"",text:"",note:"",category:activeCat,ragId:activeRag,taalId:"",createdAt:now(),updatedAt:now()};let isNew=!existing;let rOpts=rags.map(r=>`<option value="${r.id}" ${r.id===p.ragId?"selected":""}>${escapeHtml(r.name)}</option>`).join("");let tOpts=`<option value="">بدون تال</option>`+taals.map(t=>`<option value="${t.id}" ${t.id===p.taalId?"selected":""}>${faNum(taals.indexOf(t)+1)} — ${escapeHtml(t.name)}</option>`).join("");showModal(isNew?"افزودن شعر":"ویرایش شعر",`<div class="form-grid"><div><label>عنوان</label><input id="pTitle" value="${escapeHtml(p.title)}"></div><div><label>راگ</label><select id="pRag">${rOpts}</select></div><div><label>دسته</label><select id="pCat"><option value="aram" ${p.category==="aram"?"selected":""}>آرام</option><option value="motavaset" ${p.category==="motavaset"?"selected":""}>متوسط</option><option value="mast" ${p.category==="mast"?"selected":""}>مست</option></select></div><div><label>تال مرتبط</label><select id="pTaal">${tOpts}</select></div><div class="form-full"><label>متن شعر</label><textarea id="pText" placeholder="متن شعر را اینجا بنویسید...">${escapeHtml(p.text)}</textarea></div><div class="form-full"><label>یادداشت / توضیح</label><input id="pNote" value="${escapeHtml(p.note)}"></div></div>`,`<button class="ghost-btn" id="cancelM">انصراف</button><button class="gold-btn" id="saveM">ذخیره</button>`);document.getElementById("cancelM").onclick=closeModal;document.getElementById("saveM").onclick=async()=>{p.title=document.getElementById("pTitle").value.trim()||"بدون عنوان";p.ragId=document.getElementById("pRag").value;p.category=document.getElementById("pCat").value;p.taalId=document.getElementById("pTaal").value;p.text=document.getElementById("pText").value;p.note=document.getElementById("pNote").value;p.updatedAt=now();if(isNew)p.createdAt=now();await put("poems",p);activeRag=p.ragId;activeCat=p.category;closeModal();refresh();toast("شعر ذخیره شد","good")}}
+function trashPoem(id){let p=poems.find(x=>x.id===id);if(!p)return;showModal("حذف شعر",`<div class="notice warn">«${escapeHtml(p.title)}» به سطل زباله منتقل می‌شود و قابل بازیابی است.</div>`,`<button class="ghost-btn" id="cancelM">انصراف</button><button class="danger-btn" id="yes">حذف</button>`);document.getElementById("cancelM").onclick=closeModal;document.getElementById("yes").onclick=async()=>{p.deleted=true;await put("poems",p);await put("trash",{id:uid(),kind:"poem",originalId:id,data:p,deletedAt:now()});closeModal();refresh();toast("شعر حذف شد")}}
+function openPoem(id){currentPoem=poems.find(p=>p.id===id);if(!currentPoem)return;renderReader();document.getElementById("readerSection").style.display="block";document.getElementById("readerSection").scrollIntoView({behavior:"smooth",block:"start"})}
+function renderReader(){if(!currentPoem)return;let r=rags.find(x=>x.id===currentPoem.ragId),related=files.filter(f=>f.taalId===currentPoem.taalId&&!f.deleted&&f.type==="audio");let active=activeTaal||currentPoem.taalId;document.getElementById("readerSection").innerHTML=`<div class="section-head"><div class="section-title"><span class="mark"></span>${escapeHtml(currentPoem.title)}</div><button class="icon-btn" id="closeReader">×</button></div><div class="reader-controls"><div class="row"><span class="small">تال:</span>${taals.map(t=>`<button class="taal-btn ${active===t.id?"active":""}" style="min-height:44px;min-width:45px;width:auto" data-reader-taal="${t.id}">${faNum(taals.indexOf(t)+1)}</button>`).join("")}<button class="icon-btn" id="readerPlay">▶</button><button class="icon-btn" id="readerPause">Ⅱ</button><button class="icon-btn" id="readerStop">■</button><button class="icon-btn" id="reader2x">۲×</button></div><div class="small" style="margin-top:5px">${r?`راگ: ${escapeHtml(r.name)}`:"بدون راگ"} • فایل‌های تال فعال: ${faNum(related.length)}</div></div><div class="poem-reader">${escapeHtml(currentPoem.text||"متن شعر خالی است.")}</div><div class="small" style="margin-top:8px">ایجاد: ${dateText(currentPoem.createdAt)} • ویرایش: ${dateText(currentPoem.updatedAt)}</div>`;document.getElementById("closeReader").onclick=()=>{currentPoem=null;document.getElementById("readerSection").style.display="none"};document.querySelectorAll("[data-reader-taal]").forEach(b=>b.onclick=()=>{activeTaal=b.dataset.readerTaal;renderReader();renderTaalFiles()});document.getElementById("readerPlay").onclick=()=>{let a=files.find(f=>f.taalId===activeTaal&&!f.deleted&&f.type==="audio");if(a)playFile(a.id);else toast("برای این تال فایل صوتی ثبت نشده است")};document.getElementById("readerPause").onclick=()=>document.getElementById("audio").pause();document.getElementById("readerStop").onclick=stopAudio;document.getElementById("reader2x").onclick=()=>{let a=document.getElementById("audio");a.playbackRate=a.playbackRate===2?1:2;toast(a.playbackRate===2?"سرعت ۲×":"سرعت عادی")}}
+function renderGlobalSearch(){let q=normalize(document.getElementById("globalSearch").value),box=document.getElementById("globalResults");if(!q){box.innerHTML='<div class="empty">برای جست‌وجوی سراسری، عبارت خود را وارد کنید.</div>';return}let out=[];taals.filter(t=>normalize(t.name).includes(q)||String(t.order+1).includes(q)).forEach(t=>out.push(`<button class="file-item" data-gtaal="${t.id}"><div class="file-main"><div class="file-name">🥁 تال ${faNum(t.order+1)} — ${escapeHtml(t.name)}</div><div class="file-meta">${escapeHtml(t.note||"")}</div></div></button>`));files.filter(f=>normalize(f.name).includes(q)&&!f.deleted).forEach(f=>out.push(`<button class="file-item" data-gfile="${f.id}"><div class="file-main"><div class="file-name">${f.type==="video"?"🎬":"♫"} ${escapeHtml(f.name)}</div><div class="file-meta">فایل رسانه‌ای • ${fmtBytes(f.size)}</div></div></button>`));rags.filter(r=>normalize(r.name).includes(q)||normalize(r.description).includes(q)).forEach(r=>out.push(`<button class="file-item" data-grag="${r.id}"><div class="file-main"><div class="file-name">🎼 ${escapeHtml(r.name)}</div><div class="file-meta">${escapeHtml(r.description||"")}</div></div></button>`));poems.filter(p=>!p.deleted&&(normalize(p.title).includes(q)||normalize(p.text).includes(q)||normalize(p.note).includes(q))).forEach(p=>out.push(`<button class="file-item" data-gpoem="${p.id}"><div class="file-main"><div class="file-name">📖 ${escapeHtml(p.title)}</div><div class="file-meta">${p.category==="aram"?"آرام":p.category==="motavaset"?"متوسط":"مست"} • ${dateText(p.updatedAt)}</div></div></button>`));box.innerHTML=out.length?out.join(""):`<div class="empty">نتیجه‌ای پیدا نشد.</div>`;box.querySelectorAll("[data-gtaal]").forEach(b=>b.onclick=()=>{activeTaal=b.dataset.gtaal;document.getElementById("taalSection").scrollIntoView({behavior:"smooth"});renderTaals()});box.querySelectorAll("[data-gfile]").forEach(b=>b.onclick=()=>playFile(b.dataset.gfile));box.querySelectorAll("[data-grag]").forEach(b=>b.onclick=()=>{activeRag=b.dataset.grag;document.getElementById("bookSection").scrollIntoView({behavior:"smooth"});renderRags();renderPoems()});box.querySelectorAll("[data-gpoem]").forEach(b=>b.onclick=()=>openPoem(b.dataset.gpoem))}
+function updatePlayer(){let a=document.getElementById("audio"),p=document.getElementById("playerProgress");p.value=a.duration?a.currentTime/a.duration:0;document.getElementById("playerPlay").textContent=a.paused?"▶":"Ⅱ"}
+function openSettings(){document.getElementById("settingsSection").style.display="block";document.getElementById("settingsSection").innerHTML=`<div class="section-head"><div class="section-title"><span class="mark"></span>تنظیمات</div></div>
+<div class="form-grid">
+<div><label>حالت نمایش</label><select id="sTheme"><option value="dark" ${settings.theme==="dark"?"selected":""}>دارک</option><option value="light" ${settings.theme==="light"?"selected":""}>لایت</option></select></div>
+<div><label>تاریخ</label><select id="sDate"><option value="jalali">هجری شمسی/دری</option><option value="gregorian">میلادی</option></select></div>
+<div><label>اندازه متن عمومی</label><select id="sFont"><option value="0.9">کوچک</option><option value="1">متوسط</option><option value="1.12">بزرگ</option><option value="1.24">بسیار بزرگ</option></select></div>
+<div><label>اندازه متن شعر</label><input id="sPoem" type="range" min=".95" max="1.8" step=".05" value="${settings.poemScale}"></div>
+<div><label>سرعت پیش‌فرض</label><select id="sRate"><option value=".75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div>
+<div><label>پخش هنگام تغییر شعر</label><select id="sPreserve"><option value="true">حفظ پخش</option><option value="false">توقف</option></select></div>
+<div class="form-full"><label><input id="sBlur" type="checkbox" style="width:auto" ${settings.blur?"checked":""}> پس‌زمینه محو با عکس شخصی</label><div class="range-row"><input id="sBlurAmt" type="range" min="0" max="28" value="${settings.blurAmount}"><span id="blurVal">${settings.blurAmount}px</span></div></div>
+</div>
+<hr><div class="section-title" style="margin-bottom:8px">رنگ‌ها</div><div class="color-grid" id="colorGrid"></div>
+<hr><div class="toolbar"><button class="gold-btn" id="exportJson">خروجی JSON</button><button class="ghost-btn" id="exportText">خروجی Markdown</button><button class="ghost-btn" id="exportMedia">خروجی رسانه‌ها</button><button class="ghost-btn" id="importBackup">بازیابی JSON</button><button class="ghost-btn" id="trashBtn">سطل زباله</button><button class="danger-btn" id="resetSettings">بازگردانی تنظیمات</button></div>
+<div class="notice" style="margin-top:12px">نسخه 1.0.0 • ذخیره‌سازی اصلی: IndexedDB • بدون سرور برای قابلیت‌های اصلی. برای Apple Notes از Share/Copy-Paste یا فایل TXT/Markdown/CSV/JSON استفاده کنید.</div>`;
+document.getElementById("sDate").value=settings.dateMode||"jalali";document.getElementById("sRate").value=settings.defaultRate;document.getElementById("sPreserve").value=String(settings.preserveAudio);document.getElementById("sFont").value=settings.fontScale;
+document.getElementById("sTheme").onchange=e=>{settings.theme=e.target.value;saveSettings();refresh()};document.getElementById("sDate").onchange=e=>{settings.dateMode=e.target.value;saveSettings();refresh()};document.getElementById("sFont").onchange=e=>{settings.fontScale=Number(e.target.value);saveSettings()};document.getElementById("sPoem").oninput=e=>{settings.poemScale=Number(e.target.value);saveSettings()};document.getElementById("sRate").onchange=e=>{settings.defaultRate=Number(e.target.value);saveSettings()};document.getElementById("sPreserve").onchange=e=>{settings.preserveAudio=e.target.value==="true";saveSettings()};document.getElementById("sBlur").onchange=e=>{settings.blur=e.target.checked;saveSettings()};document.getElementById("sBlurAmt").oninput=e=>{settings.blurAmount=Number(e.target.value);document.getElementById("blurVal").textContent=e.target.value+"px";saveSettings()};
+let colors=settings.colors[settings.theme], labels={bg:"پس‌زمینه",surface:"کارت‌ها",surface2:"سطح دوم / دکمه تال",text:"متن اصلی",muted:"متن ثانوی",line:"خطوط",accent:"تأکیدی طلایی",active:"انتخاب فعال",glow:"نور/هاله",player:"پنل پخش"};document.getElementById("colorGrid").innerHTML=Object.entries(labels).map(([k,v])=>`<div class="color-item"><input type="color" data-color="${k}" value="${colors[k]}"><div><label>${v}</label><input data-hex="${k}" value="${colors[k]}" maxlength="7"></div></div>`).join("");document.querySelectorAll("[data-color]").forEach(e=>e.oninput=()=>{let k=e.dataset.color;colors[k]=e.value;let h=document.querySelector(`[data-hex="${k}"]`);if(h)h.value=e.value;saveSettings()});document.querySelectorAll("[data-hex]").forEach(e=>e.onchange=()=>{let v=e.value.trim();if(/^#[0-9a-fA-F]{6}$/.test(v)){colors[e.dataset.hex]=v;document.querySelector(`[data-color="${e.dataset.hex}"]`).value=v;saveSettings()}else toast("کد HEX معتبر نیست","danger")});
+document.getElementById("exportJson").onclick=exportJSON;document.getElementById("exportText").onclick=exportMarkdown;document.getElementById("exportMedia").onclick=exportMedia;document.getElementById("importBackup").onclick=()=>document.getElementById("importTextPicker").click();document.getElementById("trashBtn").onclick=openTrash;document.getElementById("resetSettings").onclick=()=>{settings=structuredClone(DEFAULTS);saveSettings();openSettings();toast("تنظیمات پیش‌فرض برگشت")}}
+function downloadBlob(blob,name){let a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+async function exportJSON(){let payload={app:APP_NAME,version:"1.0.0",exportedAt:now(),settings,rags,taals:taals.map(({id,name,note,favorite,order,createdAt,updatedAt})=>({id,name,note,favorite,order,createdAt,updatedAt})),poems,files:files.map(({id,taalId,name,size,mime,type,duration,createdAt,updatedAt,deleted})=>({id,taalId,name,size,mime,type,duration,createdAt,updatedAt,deleted}))};downloadBlob(new Blob([JSON.stringify(payload,null,2)],{type:"application/json"}),"sher-o-taal-ghafoor-backup.json");toast("خروجی JSON آماده شد","good")}
+function exportMarkdown(){let out=`# ${APP_NAME}\\n\\n`;for(let r of rags){out+=`## ${r.name}\\n${r.description||""}\\n\\n`;for(let c of ["aram","motavaset","mast"]){let ps=poems.filter(p=>p.ragId===r.id&&p.category===c&&!p.deleted);if(!ps.length)continue;out+=`### ${c==="aram"?"آرام":c==="motavaset"?"متوسط":"مست"}\\n`;ps.forEach(p=>out+=`#### ${p.title}\\n${p.text}\\n\\n`)} }downloadBlob(new Blob([out],{type:"text/markdown;charset=utf-8"}),"sher-o-taal-ghafoor-poems.md");toast("خروجی Markdown آماده شد","good")}
+async function exportMedia(){let count=0;for(let f of files.filter(x=>!x.deleted&&x.blob)){downloadBlob(f.blob,f.name);count++}toast(`${faNum(count)} فایل رسانه‌ای برای خروجی آماده شد`,"good")}
+function openTrash(){let items=trash;showModal("سطل زباله",items.length?items.map(x=>`<div class="file-item"><div class="file-main"><div class="file-name">${x.kind==="poem"?"📖":"🥁"} ${escapeHtml(x.data?.name||x.data?.title||"مورد حذف‌شده")}</div><div class="file-meta">${dateText(x.deletedAt)}</div></div><button class="gold-btn" data-restore="${x.id}">بازیابی</button><button class="danger-btn" data-purge="${x.id}">حذف دائمی</button></div>`).join(""):`<div class="empty">سطل زباله خالی است.</div>`,`<button class="ghost-btn" id="cancelM">بستن</button>`);document.getElementById("cancelM").onclick=closeModal;document.querySelectorAll("[data-restore]").forEach(b=>b.onclick=()=>restoreTrash(b.dataset.restore));document.querySelectorAll("[data-purge]").forEach(b=>b.onclick=()=>purgeTrash(b.dataset.purge))}
+async function restoreTrash(id){let x=trash.find(t=>t.id===id);if(!x)return;if(x.kind==="poem"){x.data.deleted=false;await put("poems",x.data)}else if(x.kind==="file"){let f=files.find(z=>z.id===x.originalId);if(f){f.deleted=false;await put("files",f)}}else if(x.kind==="taal"){x.data.deleted=false;await put("taals",x.data);for(let f of files.filter(z=>z.taalId===x.originalId)) {f.deleted=false;await put("files",f)}}await del("trash",id);closeModal();refresh();toast("مورد بازیابی شد","good")}
+async function purgeTrash(id){showModal("حذف دائمی",`<div class="notice danger">این مورد برای همیشه حذف می‌شود و قابل بازیابی نخواهد بود.</div>`,`<button class="ghost-btn" id="cancelM">انصراف</button><button class="danger-btn" id="yesPurge">حذف دائمی</button>`);document.getElementById("cancelM").onclick=closeModal;document.getElementById("yesPurge").onclick=async()=>{await del("trash",id);closeModal();refresh();toast("حذف دائمی شد")}}
+async function importTextFiles(list){for(let f of list){let text=await f.text();if(f.name.toLowerCase().endsWith(".json")){try{let p=JSON.parse(text);await importBackupObject(p)}catch{toast("JSON نامعتبر است","danger")}}else{let title=f.name.replace(/\.(txt|md|csv)$/i,"");poemModal({id:uid(),title,text,note:"واردشده از فایل",category:activeCat,ragId:activeRag||rags[0]?.id||"",taalId:"",createdAt:now(),updatedAt:now()})}}}
+async function importBackupObject(p){if(!p||p.app!==APP_NAME){toast("این فایل پشتیبان مربوط به برنامه نیست","danger");return}let exists=new Set(poems.map(x=>normalize(x.title)+"|"+normalize(x.text)));for(let r of p.rags||[])if(!rags.some(x=>x.id===r.id)){await put("rags",r)}for(let t of p.taals||[])if(!taals.some(x=>x.id===t.id)){await put("taals",t)}for(let po of p.poems||[]){let key=normalize(po.title)+"|"+normalize(po.text);if(!exists.has(key))await put("poems",po)}settings=p.settings||settings;saveSettings();await refresh();toast("پشتیبان ساختاری با موفقیت وارد شد","good")}
+document.getElementById("addTaalBtn").onclick=addTaal;document.getElementById("addPoemBtn").onclick=()=>poemModal();document.getElementById("globalSearchBtn").onclick=()=>{document.getElementById("searchSection").scrollIntoView({behavior:"smooth"});document.getElementById("globalSearch").focus()};document.getElementById("settingsBtn").onclick=()=>showNav("settings");
+document.getElementById("taalSearch").oninput=renderTaals;document.getElementById("clearTaalSearch").onclick=()=>{document.getElementById("taalSearch").value="";renderTaals()};document.getElementById("poemSearch").oninput=renderPoems;document.getElementById("clearPoemSearch").onclick=()=>{document.getElementById("poemSearch").value="";renderPoems()};document.getElementById("globalSearch").oninput=renderGlobalSearch;document.getElementById("clearGlobalSearch").onclick=()=>{document.getElementById("globalSearch").value="";renderGlobalSearch()};document.querySelectorAll(".category-tabs button").forEach(b=>b.onclick=()=>{activeCat=b.dataset.cat;renderPoems()});document.getElementById("importBtn").onclick=()=>document.getElementById("importTextPicker").click();document.getElementById("importTextPicker").onchange=e=>importTextFiles(e.target.files);
+document.getElementById("playerPlay").onclick=()=>{let a=document.getElementById("audio");if(a.paused)a.play();else a.pause()};document.getElementById("playerStop").onclick=stopAudio;document.getElementById("playerRate").onchange=e=>{document.getElementById("audio").playbackRate=Number(e.target.value)};document.getElementById("playerProgress").onclick=e=>{let a=document.getElementById("audio");if(a.duration)a.currentTime=(e.offsetX/e.currentTarget.clientWidth)*a.duration};document.getElementById("audio").ontimeupdate=updatePlayer;document.getElementById("audio").onplay=updatePlayer;document.getElementById("audio").onpause=updatePlayer;document.getElementById("audio").onended=()=>{updatePlayer();document.getElementById("playerPlay").textContent="▶"};
+document.querySelectorAll("[data-nav]").forEach(b=>b.onclick=()=>showNav(b.dataset.nav));
+window.addEventListener("beforeunload",()=>{try{if(settings.preserveAudio&&!document.getElementById("audio").paused)localStorage.setItem("stg.lastPlayback",JSON.stringify({fileId:currentFile?.id,time:document.getElementById("audio").currentTime}))}catch{}});
+(async()=>{try{db=await openDB();await refresh();await seed();activeRag=activeRag||rags[0]?.id;renderAll();applySettings();document.getElementById("globalResults").innerHTML='<div class="empty">برای جست‌وجوی سراسری، عبارت خود را وارد کنید.</div>';if("serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register(new URL("./sw.js",location.href)).catch(()=>{});document.getElementById("audio").playbackRate=settings.defaultRate}catch(e){console.error(e);toast("راه‌اندازی ذخیره‌سازی انجام نشد","danger")}})();
+</script>
+</body>
+</html>
